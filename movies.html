@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flixo</title>
+    <link rel="icon" href="./Images/logo.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
+    <link id="theme-style" rel="stylesheet" href="./css/styleLight.css" />
+  </head>
+  <body>
+    <nav class="navigator">
+      <div class="container">
+        <div class="nav-container">
+          <div class="nav-left">
+            <a href="index.html">Flixo</a>
+          </div>
+          <div class="nav-center">
+            <ul class="nav-list">
+              <li><a href="./index.html">Home</a></li>
+              <li><a href="./index.html#pricesBox">Pricing</a></li>
+              <li><a href="./movies.html">Movies</a></li>
+              <li><a href="#footer">Studios</a></li>
+            </ul>
+          </div>
+          <div class="nav-right">
+            <form class="searchForm" action="">
+              <input type="text" class="searchInput" />
+              <button class="bi bi-search searchBtn"></button>
+              <div class="search-popup"></div>
+            </form>
+            <a href="./wishlist.html" class="bi bi-star-fill wishlistBtn"></a>
+            <i class="bi bi-brightness-high-fill themeBtn"></i>
+          </div>
+          <div class="hamburger">
+            <i class="bi bi-list hamburgerBtn"></i>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div id="videoPopup" class="video-popup">
+      <div class="video-container">
+        <iframe
+          id="popupVideo"
+          width="560"
+          height="315"
+          src=""
+          title="YouTube video player"
+          frameborder="0"
+          allow="
+            accelerometer;
+            autoplay;
+            clipboard-write;
+            encrypted-media;
+            gyroscope;
+            picture-in-picture;
+            web-share;
+          "
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin"
+        >
+        </iframe>
+      </div>
+    </div>
+
+    <div class="hamburger-menu">
+      <i class="bi bi-x exitBtn"></i>
+      <ul class="nav-list">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./index.html#pricesBox">Pricing</a></li>
+        <li><a href="./movies.html">Movies</a></li>
+        <li><a href="#footer">Studios</a></li>
+        <li>
+          <form class="searchForm">
+            <input
+              type="text"
+              class="searchInput"
+              placeholder="Search movies..."
+            />
+            <button type="submit" class="bi bi-search searchBtn"></button>
+            <div class="search-popup"></div>
+          </form>
+          <a href="./wishlist.html" class="bi bi-star-fill wishlistBtn"></a>
+          <i class="bi bi-brightness-high-fill themeBtn"></i>
+        </li>
+      </ul>
+    </div>
+
+    <div class="container moviesContainer">
+      <label for="pet-select">Filter Genres:</label>
+
+      <select id="genre-select" size="4">
+
+      </select>
+      <div class="movie-detail"></div>
+    </div>
+
+    <footer class="footer" id="footer">
+      <h2>Studios</h2>
+      <img src="./Images/Group 27.png" alt="studios" />
+      <p>Flixo -All Rights Reserved.</p>
+    </footer>
+
+    <script type="module" src="./js/script.js"></script>
+  </body>
+</html>
