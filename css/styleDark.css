@@ -311,6 +311,32 @@ body.fade {
   cursor: pointer;
 }
 
+.hamburger-menu .searchForm {
+  display: block;
+  margin: 0 auto 25px auto;
+  text-align: center;
+}
+
+.hamburger-menu .searchForm .searchInput {
+  width: 70%;
+  max-width: 300px;
+  height: 35px;
+  font-size: 16px;
+}
+
+.hamburger-menu .searchForm .searchBtn {
+  font-size: 22px;
+  vertical-align: middle;
+}
+
+.hamburger-menu .wishlistBtn,
+.hamburger-menu .themeBtn {
+  display: inline-block;
+  margin: 10px 15px 0 15px;
+  font-size: 32px;
+  vertical-align: middle;
+}
+
 .active {
   opacity: 1;
   pointer-events: auto;
@@ -343,50 +369,119 @@ body.fade {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
   transition: transform 0.6s ease;
+  padding: 20px 0;
+  margin: -20px 0;
 }
 
 .trending-slider {
   overflow: hidden;
   position: relative;
+  padding: 20px 0;
+  margin: -20px 0;
 }
 
 .films a,
+.movie-detail a {
+  flex-shrink: 0;
+  display: block;
+  width: 300px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 16px -6px rgba(0, 0, 0, 0.5);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  z-index: 1;
+}
+
+.films a:hover,
+.movie-detail a:hover {
+  transform: translateY(-12px) scale(1.04);
+  box-shadow: 0 20px 35px -5px rgba(34, 142, 229, 0.35), 0 0 15px 1px rgba(34, 142, 229, 0.2);
+  z-index: 15;
+}
+
 .characters a {
   flex-shrink: 0;
+  display: block;
+  width: 300px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 16px -6px rgba(0, 0, 0, 0.5);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  z-index: 1;
+}
+
+.characters a:hover {
+  transform: translateY(-12px) scale(1.04);
+  box-shadow: 0 20px 35px -5px rgba(255, 255, 255, 0.15), 0 8px 16px -6px rgba(255, 255, 255, 0.1);
+  z-index: 15;
 }
 
 .films img,
-.characters img {
-  width: 300px;
+.characters img,
+.movie-detail a img {
+  width: 100%;
   display: block;
-  border-radius: 10px;
   cursor: pointer;
 }
+
 .moviesContainer {
-  
   margin-top: 150px;
+  text-align: center;
+  
   label {
     color: white;
-    font-size: 20px;
-    margin-left: 40px;
-    vertical-align: middle;
+    font-size: 24px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
   }
-  select{
-    vertical-align: middle;
-    margin: 10px 20px;
-    background-color: rgb(0, 85, 255);
-    border: 0;
-    outline: 0;
-    color: white;
-    cursor: pointer;
-    option{
-      background-color: #11243a;
-      cursor: pointer;
-      color: white;
-    }
-  }
+}
+
+/* Modern Genre Chips Container */
+.genre-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin: 20px auto 50px auto;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+
+/* Modern Genre Pill Button */
+.genre-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #a4b3c6;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  outline: none;
+}
+
+.genre-pill:hover {
+  background: rgba(34, 142, 229, 0.1);
+  border-color: rgba(34, 142, 229, 0.5);
+  color: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(34, 142, 229, 0.25);
+}
+
+.genre-pill.active {
+  background: linear-gradient(135deg, #228ee5, #0851c6);
+  border-color: #228ee5;
+  color: #ffffff;
+  box-shadow: 0 8px 25px rgba(34, 142, 229, 0.45);
+  transform: translateY(-3px);
+  font-weight: 600;
 }
 
 .movie-detail {
@@ -396,11 +491,6 @@ body.fade {
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 50px;
-  a {
-    img {
-      width: 300px;
-    }
-  }
 }
 
 .video-popup {
@@ -650,10 +740,29 @@ body.fade {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 20px;
-  img {
+  gap: 30px;
+  
+  a {
+    display: block;
     width: 300px;
-    border-radius: 20px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 16px -6px rgba(0, 0, 0, 0.5);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    z-index: 1;
+    
+    img {
+      width: 100%;
+      display: block;
+      border-radius: 0;
+    }
+  }
+  
+  a:hover {
+    transform: translateY(-12px) scale(1.04);
+    box-shadow: 0 20px 35px -5px rgba(34, 142, 229, 0.35), 0 0 15px 1px rgba(34, 142, 229, 0.2);
+    z-index: 15;
   }
   button {
     display: block;
@@ -726,10 +835,11 @@ body.fade {
       0 0 5px #228ee5;
   }
   .movie-detail {
-    gap: 50px;
+    gap: 30px;
     a {
+      width: 200px;
       img {
-        width: 200px;
+        width: 100%;
       }
     }
   }
