@@ -19,7 +19,7 @@ const movieRelease = document.querySelector(".movie-release");
 const watchMovie = document.querySelector(".watchMovie");
 const videoContainer = document.querySelector(".video-container");
 const searchForms = document.querySelectorAll(".searchForm");
-const searchInput = document.querySelector(".searchInput");
+const searchInputs = document.querySelectorAll(".searchInput");
 const searchPopup = document.querySelector(".search-popup");
 const navListEls = document.querySelectorAll(".nav-list");
 const videoPopup = document.querySelector(".video-popup");
@@ -104,6 +104,12 @@ const options = {
 };
 
 const moviesURL = "https://api.themoviedb.org/3/discover/movie?page=";
+const searchMoviesURL = "https://api.themoviedb.org/3/search/movie?query=";
+
+function getAllMoviesBySearch(options, searchValue) {
+  const data = getMovies(`${searchMoviesURL}${searchValue}`, options);
+  return data;
+}
 
 function getAllMovies(options) {
   let allMovies = [];
@@ -122,41 +128,71 @@ function getAllMovies(options) {
 
 if (films) films.innerHTML = "";
 
-// drawing movies on movies.html and index.html
+function renderMoviesToDetails(movies) {
+  if (!movieDetails) return;
+  movies.forEach((movie) => {
+    if (!movie.poster_path) return;
+    const movieID = movie.id;
 
-if (window.location.pathname.endsWith("movies.html")) {
-  getAllMovies(options)[0].forEach((el) => {
-    el.then((data) => data.results).then((movies) => {
-      let filteredMovies = movies;
+    const filmLink = document.createElement("a");
+    filmLink.href = `./movie.html?id=${movieID}`;
 
-      if (searchID) {
-        filteredMovies = movies.filter((movie) => {
-          return (
-            movie.title &&
-            movie.title.toLowerCase().includes(searchID.toLowerCase())
-          );
-        });
-      }
+    const filmImage = document.createElement("img");
+    filmImage.src = `https://image.tmdb.org/t/p/w342${movie.poster_path}`;
+    filmImage.alt = movie.title;
 
-      filteredMovies.forEach((movie) => {
-        const movieID = movie.id;
+    filmLink.append(filmImage);
+    movieDetails.append(filmLink);
 
-        const filmLink = document.createElement("a");
-        filmLink.href = `./movie.html?id=${movieID}`;
-
-        const filmImage = document.createElement("img");
-        filmImage.src = `https://image.tmdb.org/t/p/w342${movie.poster_path}`;
-        filmImage.alt = movie.title;
-
-        filmLink.append(filmImage);
-        if (movieDetails) movieDetails.append(filmLink);
-
-        filmLink.addEventListener("click", () => {
-          filmID = movieID;
-        });
-      });
+    filmLink.addEventListener("click", () => {
+      filmID = movieID;
     });
   });
+}
+
+function loadDefaultMovies() {
+  if (!movieDetails) return;
+  movieDetails.innerHTML = "";
+  getAllMovies(options)[0].forEach((el) => {
+    el.then((data) => {
+      if (data && data.results) {
+        renderMoviesToDetails(data.results);
+      }
+    });
+  });
+}
+
+function loadSearchMovies(query) {
+  if (!movieDetails) return;
+  movieDetails.innerHTML = "";
+  getAllMoviesBySearch(options, query).then((data) => {
+    const movies = data.results || [];
+    if (movies.length === 0) {
+      const noResults = document.createElement("div");
+      noResults.textContent = "No movies found matching your search.";
+      noResults.style.color = "red";
+      noResults.style.fontSize = "1.5rem";
+      noResults.style.textAlign = "center";
+      noResults.style.width = "100%";
+      noResults.style.marginTop = "2rem";
+      movieDetails.appendChild(noResults);
+      return;
+    }
+    renderMoviesToDetails(movies);
+  });
+}
+
+// drawing movies on movies.html and index.html
+
+if (window.location.pathname.endsWith("movies.html") || window.location.pathname.endsWith("movies")) {
+  if (searchID) {
+    searchInputs.forEach((input) => {
+      input.value = searchID;
+    });
+    loadSearchMovies(searchID);
+  } else {
+    loadDefaultMovies();
+  }
 }
 
 getAllMovies(options)[1].forEach((el) => {
@@ -392,48 +428,23 @@ searchForms.forEach((form) => {
   });
 });
 
+let searchDebounceTimeout;
+
 function changeFilmsAsSearch(value = "") {
   if (!movieDetails) return;
-  if (!searchPopup) return;
 
-  movieDetails.innerHTML = "";
-  searchPopup.innerHTML = "";
+  clearTimeout(searchDebounceTimeout);
 
-  getAllMovies(options)[0].forEach((el) => {
-    el.then((data) => {
-      let movies = data.results;
-
-      let filteredMoviesBySearch = movies;
-
-      if (value && value.trim() !== "") {
-        filteredMoviesBySearch = movies.filter((movie) => {
-          return (
-            movie.title &&
-            movie.title.toLowerCase().includes(value.toLowerCase())
-          );
-        });
-      }
-
-      filteredMoviesBySearch.forEach((movie) => {
-        const filmLinkBySearch = document.createElement("a");
-        filmLinkBySearch.href = `./movie.html?id=${movie.id}`;
-        const filmImageBySearch = document.createElement("img");
-        filmImageBySearch.src = `https://image.tmdb.org/t/p/original${movie.poster_path}`;
-        filmImageBySearch.alt = movie.title;
-
-        filmLinkBySearch.appendChild(filmImageBySearch);
-        movieDetails.appendChild(filmLinkBySearch);
-      });
-    });
-  });
+  if (value && value.trim() !== "") {
+    searchDebounceTimeout = setTimeout(() => {
+      loadSearchMovies(value);
+    }, 300);
+  } else {
+    loadDefaultMovies();
+  }
 }
 
-let searchMoviesURL = "https://api.themoviedb.org/3/search/movie?query=";
 
-function getAllMoviesBySearch(options, searchValue) {
-  const data = getMovies(`${searchMoviesURL}${searchValue}`, options);
-  return data;
-}
 
 function updateSearchPopup(value = "") {
   if (window.innerWidth <= 1092) return;
@@ -479,27 +490,37 @@ function updateSearchPopup(value = "") {
 }
 
 
-searchInput.addEventListener("input", (e) => {
-  const searchValue = e.target.value;
+searchInputs.forEach((input) => {
+  input.addEventListener("input", (e) => {
+    const searchValue = e.target.value;
 
-  if (genreSelect) genreSelect.value = "";
+    // Sync all search inputs
+    searchInputs.forEach((otherInput) => {
+      if (otherInput !== input) {
+        otherInput.value = searchValue;
+      }
+    });
 
-  changeFilmsAsSearch(searchValue);
-  updateSearchPopup(searchValue);
+    if (genreSelect) genreSelect.value = "";
+
+    changeFilmsAsSearch(searchValue);
+    updateSearchPopup(searchValue);
+  });
+
+  input.addEventListener("focus", () => {
+    if (window.innerWidth <= 1092) return;
+    if (input.value.trim() !== "") {
+      searchPopup.style.display = "block";
+    }
+  });
 });
 
 document.addEventListener("click", (e) => {
-  if (window.innerWidth <= 1092 || !searchPopup || !searchInput) return;
+  if (window.innerWidth <= 1092 || !searchPopup || !searchInputs.length) return;
 
-  if (!searchPopup.contains(e.target) && e.target !== searchInput) {
+  const isClickInsideInput = Array.from(searchInputs).some((input) => input.contains(e.target));
+  if (!searchPopup.contains(e.target) && !isClickInsideInput) {
     searchPopup.style.display = "none";
-  }
-});
-
-searchInput.addEventListener("focus", () => {
-  if (window.innerWidth <= 1092) return;
-  if (searchInput.value.trim() !== "") {
-    searchPopup.style.display = "block";
   }
 });
 
