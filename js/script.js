@@ -1,6 +1,5 @@
 import getMovies from "./getMovies.js";
 import getMovie from "./getMovie.js";
-import getTrailer from "./getTrailer.js";
 import applyTheme from "./theme.js";
 import getCharacters from "./getCharacters.js";
 import getCharacter from "./getCharacter.js";
@@ -358,30 +357,16 @@ if (window.location.pathname.endsWith("movie.html")) {
   }
 
   if (filmID !== null) {
-    getTrailer(filmID).then((movie) => {
-      watchMovie.addEventListener("click", (e) => {
-        e.preventDefault();
+    watchMovie.addEventListener("click", (e) => {
+      e.preventDefault();
+      popupVideo.src = `https://vidsrc.sbs/embed/movie/${filmID}`;
+      videoPopup.style.display = "flex";
+    });
 
-        let movieResult = movie.results;
-
-        movieResult.forEach((el) => {
-          console.log(el);
-
-          if (
-            el.name.toLowerCase().includes("official") ||
-            el.name.toLowerCase().includes("final")
-          ) {
-            popupVideo.src = `https://www.youtube.com/embed/${el.key}`;
-            videoPopup.style.display = "flex";
-          }
-        });
-      });
-
-      videoContainer.addEventListener("click", (e) => {
-        e.preventDefault();
-
-        videoPopup.style.display = "none";
-      });
+    videoContainer.addEventListener("click", (e) => {
+      e.preventDefault();
+      videoPopup.style.display = "none";
+      popupVideo.src = "";
     });
   }
 
