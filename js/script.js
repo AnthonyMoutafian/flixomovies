@@ -501,7 +501,15 @@ searchInputs.forEach((input) => {
       }
     });
 
-    if (genreSelect) genreSelect.value = "";
+    if (genreSelect) {
+      genreSelect.querySelectorAll(".genre-pill").forEach((pill) => {
+        if (pill.dataset.value === "all") {
+          pill.classList.add("active");
+        } else {
+          pill.classList.remove("active");
+        }
+      });
+    }
 
     changeFilmsAsSearch(searchValue);
     updateSearchPopup(searchValue);
@@ -579,15 +587,31 @@ async function fetchGenres() {
     const res = await fetch(`${genresURL}`, options);
     const data = await res.json();
     const genres = data.genres;
-    const allOption = document.createElement("option");
-    allOption.value = "all";
-    allOption.textContent = "All Genres";
-    genreSelect.appendChild(allOption);
+    
+    genreSelect.innerHTML = "";
+    
+    const allPill = document.createElement("button");
+    allPill.classList.add("genre-pill", "active");
+    allPill.dataset.value = "all";
+    allPill.textContent = "All Genres";
+    genreSelect.appendChild(allPill);
+    
     genres.forEach((genre) => {
-      const option = document.createElement("option");
-      option.value = genre.id;
-      option.textContent = genre.name;
-      genreSelect.appendChild(option);
+      const pill = document.createElement("button");
+      pill.classList.add("genre-pill");
+      pill.dataset.value = genre.id;
+      pill.textContent = genre.name;
+      genreSelect.appendChild(pill);
+    });
+
+    genreSelect.querySelectorAll(".genre-pill").forEach((pill) => {
+      pill.addEventListener("click", () => {
+        genreSelect.querySelectorAll(".genre-pill").forEach((p) => p.classList.remove("active"));
+        pill.classList.add("active");
+        
+        const genreId = pill.dataset.value;
+        handleGenreSelection(genreId);
+      });
     });
   } catch (err) {
     console.error("Error fetching genres:", err);
@@ -618,24 +642,20 @@ function fetchMoviesByGenre(genreId) {
     });
 }
 
-if (genreSelect) {
-  genreSelect.addEventListener("change", (e) => {
-    const genreId = e.target.value;
+function handleGenreSelection(genreId) {
+  fetchMoviesByGenre(genreId).then((movies) => {
+    if (movieDetails) movieDetails.innerHTML = "";
 
-    fetchMoviesByGenre(genreId).then((movies) => {
-      if (movieDetails) movieDetails.innerHTML = "";
+    movies.forEach((movie) => {
+      const filmLink = document.createElement("a");
+      filmLink.href = `./movie.html?id=${movie.id}`;
 
-      movies.forEach((movie) => {
-        const filmLink = document.createElement("a");
-        filmLink.href = `./movie.html?id=${movie.id}`;
+      const filmImage = document.createElement("img");
+      filmImage.src = `https://image.tmdb.org/t/p/w342${movie.poster_path}`;
+      filmImage.alt = movie.title;
 
-        const filmImage = document.createElement("img");
-        filmImage.src = `https://image.tmdb.org/t/p/w342${movie.poster_path}`;
-        filmImage.alt = movie.title;
-
-        filmLink.appendChild(filmImage);
-        movieDetails.appendChild(filmLink);
-      });
+      filmLink.appendChild(filmImage);
+      movieDetails.appendChild(filmLink);
     });
   });
 }
