@@ -395,7 +395,7 @@ if (window.location.pathname.endsWith("movie.html")) {
   if (filmID !== null) {
     watchMovie.addEventListener("click", (e) => {
       e.preventDefault();
-      popupVideo.src = `https://vidsrc.sbs/embed/movie/${filmID}`;
+      popupVideo.src = `https://player.vidlove.cc/embed/movie/${filmID}`;
       videoPopup.style.display = "flex";
     });
 
