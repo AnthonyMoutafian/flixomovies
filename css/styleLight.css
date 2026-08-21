@@ -311,6 +311,32 @@ body.fade {
   cursor: pointer;
 }
 
+.hamburger-menu .searchForm {
+  display: block;
+  margin: 0 auto 25px auto;
+  text-align: center;
+}
+
+.hamburger-menu .searchForm .searchInput {
+  width: 70%;
+  max-width: 300px;
+  height: 35px;
+  font-size: 16px;
+}
+
+.hamburger-menu .searchForm .searchBtn {
+  font-size: 22px;
+  vertical-align: middle;
+}
+
+.hamburger-menu .wishlistBtn,
+.hamburger-menu .themeBtn {
+  display: inline-block;
+  margin: 10px 15px 0 15px;
+  font-size: 32px;
+  vertical-align: middle;
+}
+
 .active {
   opacity: 1;
   pointer-events: auto;
@@ -337,59 +363,117 @@ body.fade {
   color: #115994;
 }
 
-.films, .characters {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-}
 
 .trending-slider {
   overflow: hidden;
   width: 100%;
   margin: 0 auto 50px;
   position: relative;
+  padding: 20px 0;
+  margin-bottom: 30px;
 }
 
 .films, .characters {
   display: flex;
   transition: transform 1s ease-in-out;
-  gap: 10px;
+  gap: 20px;
+  padding: 20px 0;
+  margin: -20px 0;
 }
 
-.films a, .characters a {
+.films a, .movie-detail a {
   flex: 0 0 auto;
   width: 300px;
-  border-radius: 10px;
+  border-radius: 14px;
   overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 16px -6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  z-index: 1;
 }
 
-.films img, .characters img {
+.films a:hover, .movie-detail a:hover {
+  transform: translateY(-12px) scale(1.04);
+  box-shadow: 0 20px 35px -5px rgba(242, 147, 53, 0.3), 0 0 15px 1px rgba(242, 147, 53, 0.15);
+  z-index: 15;
+}
+
+.characters a {
+  flex: 0 0 auto;
+  width: 300px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 16px -6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  z-index: 1;
+}
+
+.characters a:hover {
+  transform: translateY(-12px) scale(1.04);
+  box-shadow: 0 20px 35px -5px rgba(0, 0, 0, 0.15), 0 8px 16px -6px rgba(0, 0, 0, 0.1);
+  z-index: 15;
+}
+
+.films img, .characters img, .movie-detail a img {
   width: 100%;
   display: block;
-  border-radius: 10px;
   cursor: pointer;
 }
 .moviesContainer {
   margin-top: 150px;
+  text-align: center;
+  
   label {
-    color: rgb(0, 0, 0);
-    font-size: 40px;
-    margin-left: 80px;
+    color: #091e51;
+    font-size: 24px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
   }
-  select{
-    margin: 0 20px;
-    background-color: rgb(255, 132, 0);
-    border: 0;
-    outline: 0;
-    color: white;
-    cursor: pointer;
+}
 
-    option{
-      background-color: #282828;
-      color: white;
-    }
-  }
+/* Modern Genre Chips Container */
+.genre-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin: 20px auto 50px auto;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+
+/* Modern Genre Pill Button */
+.genre-pill {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #4a5568;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  outline: none;
+}
+
+.genre-pill:hover {
+  background: rgba(242, 147, 53, 0.08);
+  border-color: rgba(242, 147, 53, 0.4);
+  color: #f29335;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(242, 147, 53, 0.15);
+}
+
+.genre-pill.active {
+  background: linear-gradient(135deg, #f29335, #ff7e00);
+  border-color: #f29335;
+  color: #ffffff;
+  box-shadow: 0 8px 25px rgba(242, 147, 53, 0.35);
+  transform: translateY(-3px);
+  font-weight: 600;
 }
 
 .movie-detail {
@@ -399,11 +483,6 @@ body.fade {
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 50px;
-  a {
-    img {
-      width: 300px;
-    }
-  }
 }
 
 .video-popup {
@@ -657,10 +736,29 @@ body.fade {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 20px;
-  img {
+  gap: 30px;
+  
+  a {
+    display: block;
     width: 300px;
-    border-radius: 20px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 16px -6px rgba(0, 0, 0, 0.08);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    z-index: 1;
+    
+    img {
+      width: 100%;
+      display: block;
+      border-radius: 0;
+    }
+  }
+  
+  a:hover {
+    transform: translateY(-12px) scale(1.04);
+    box-shadow: 0 20px 35px -5px rgba(242, 147, 53, 0.3), 0 0 15px 1px rgba(242, 147, 53, 0.15);
+    z-index: 15;
   }
   button{
     display: block;
@@ -726,10 +824,11 @@ body.fade {
       0 0 5px #228ee5;
   }
   .movie-detail {
-    gap: 50px;
+    gap: 30px;
     a {
+      width: 200px;
       img {
-        width: 200px;
+        width: 100%;
       }
     }
   }
@@ -738,3 +837,310 @@ body.fade {
     width: 100%;
   }
 }
+
+/* Seasons and Episodes Styles */
+.seasons-episodes-section {
+  margin-top: 40px;
+  margin-bottom: 60px;
+  padding: 30px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.seasons-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid rgba(34, 142, 229, 0.2);
+  margin-bottom: 25px;
+}
+
+.seasons-heading {
+  font-size: 1.8rem;
+  color: #091e51;
+}
+
+.seasons-tabs-wrapper {
+  margin-bottom: 30px;
+}
+
+.seasons-label {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #091e51;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.seasons-tabs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.season-btn {
+  background: #ffffff;
+  color: #091e51;
+  border: 2px solid #228ee5;
+  border-radius: 25px;
+  padding: 8px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.season-btn:hover {
+  background: #228ee5;
+  color: #ffffff;
+}
+
+.season-btn.active {
+  background: #f29335;
+  color: #ffffff;
+  border-color: #f29335;
+  box-shadow: 0 4px 12px rgba(242, 147, 53, 0.4);
+}
+
+.current-season-title {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  color: #091e51;
+}
+
+.episodes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.episode-card {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.episode-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(34, 142, 229, 0.2);
+  border-color: #228ee5;
+}
+
+.episode-card.active-episode {
+  border-color: #f29335;
+  box-shadow: 0 0 15px rgba(242, 147, 53, 0.4);
+}
+
+.episode-img-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #091e51;
+  overflow: hidden;
+}
+
+.episode-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.episode-card:hover .episode-img-wrapper img {
+  transform: scale(1.05);
+}
+
+.episode-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(9, 30, 81, 0.85);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  backdrop-filter: blur(4px);
+}
+
+.play-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.play-overlay i {
+  font-size: 3rem;
+  color: #ffffff;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+}
+
+.episode-card:hover .play-overlay {
+  opacity: 1;
+}
+
+.episode-info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.episode-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #091e51;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.episode-meta {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.episode-overview {
+  font-size: 0.9rem;
+  color: #444;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.episode-watch-btn {
+  margin-top: auto;
+  background: #228ee5;
+  color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.3s ease;
+}
+
+.episode-watch-btn:hover {
+  background: #115994;
+}
+
+.card-media-type {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #f29335;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+/* Customized Watch Show & Watch Movie Buttons */
+.watchTvShow,
+.film-right .watchMovie {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #0084ff 0%, #0052cc 100%);
+  color: #ffffff !important;
+  font-size: 1.15rem;
+  font-weight: 700;
+  padding: 14px 34px;
+  border-radius: 30px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  box-shadow: 0 8px 25px rgba(0, 132, 255, 0.4), 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+  margin: 10px 0;
+  z-index: 1;
+}
+
+.watchTvShow i,
+.film-right .watchMovie i {
+  font-size: 1.4rem;
+  transition: transform 0.3s ease;
+}
+
+.watchTvShow:hover,
+.film-right .watchMovie:hover {
+  background: linear-gradient(135deg, #0095ff 0%, #003db3 100%);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 14px 35px rgba(0, 132, 255, 0.6), 0 0 20px rgba(0, 132, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.8);
+  color: #ffffff !important;
+}
+
+.watchTvShow:hover i,
+.film-right .watchMovie:hover i {
+  transform: scale(1.25) translateX(2px);
+}
+
+.watchTvShow:active,
+.film-right .watchMovie:active {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 6px 20px rgba(0, 132, 255, 0.5);
+}
+
+/* Customized Wishlist Button */
+.tvWishlistBtn,
+.film-right .wishlistAddBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #f29335 0%, #d87817 100%);
+  color: #ffffff !important;
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 30px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all 0.35s ease;
+  box-shadow: 0 8px 25px rgba(242, 147, 53, 0.35);
+  margin: 10px 0;
+}
+
+.tvWishlistBtn:hover,
+.film-right .wishlistAddBtn:hover {
+  background: linear-gradient(135deg, #ffa64d 0%, #e66b00 100%);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 14px 35px rgba(242, 147, 53, 0.5);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flixo</title>
+    <title>Flixo - TV Shows</title>
     <link rel="icon" href="./Images/logo.png" type="image/x-icon" />
     <link
       rel="stylesheet"
@@ -28,7 +28,7 @@
           </div>
           <div class="nav-right">
             <form class="searchForm" action="">
-              <input type="text" class="searchInput" />
+              <input type="text" class="searchInput" placeholder="Search movies & TV shows..." />
               <button class="bi bi-search searchBtn"></button>
               <div class="search-popup"></div>
             </form>
@@ -42,6 +42,31 @@
       </div>
     </nav>
 
+    <div id="videoPopup" class="video-popup">
+      <div class="video-container">
+        <iframe
+          id="popupVideo"
+          width="560"
+          height="315"
+          src=""
+          title="Video player"
+          frameborder="0"
+          allow="
+            accelerometer;
+            autoplay;
+            clipboard-write;
+            encrypted-media;
+            gyroscope;
+            picture-in-picture;
+            web-share;
+          "
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin"
+        >
+        </iframe>
+      </div>
+    </div>
+
     <div class="hamburger-menu">
       <i class="bi bi-x exitBtn"></i>
       <ul class="nav-list">
@@ -54,7 +79,7 @@
             <input
               type="text"
               class="searchInput"
-              placeholder="Search movies..."
+              placeholder="Search movies & TV shows..."
             />
             <button type="submit" class="bi bi-search searchBtn"></button>
             <div class="search-popup"></div>
@@ -65,20 +90,17 @@
       </ul>
     </div>
 
-    <div class="container">
-      <div class="wishlist-container">
-        <h2 class="category">Wishlist</h2>
+    <div class="container moviesContainer">
+      <label>Filter TV Genres:</label>
 
-        <div class="wishedFilms-container">
-
-        </div>
-      </div>
+      <div id="tv-genre-select" class="genre-chips"></div>
+      <div class="movie-detail tv-shows-detail"></div>
     </div>
 
     <footer class="footer" id="footer">
       <h2>Studios</h2>
       <img src="./Images/Group 27.png" alt="studios" />
-      <p>Flixo -All Rights Reserved.</p>
+      <p>Flixo - All Rights Reserved.</p>
     </footer>
 
     <script type="module" src="./js/script.js"></script>
