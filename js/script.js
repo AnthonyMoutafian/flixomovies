@@ -9,6 +9,8 @@ import getTVs from "./getTVs.js";
 
 const hamburgerBtn = document.querySelector(".hamburgerBtn");
 const hamburgerMenu = document.querySelector(".hamburger-menu");
+const hamburgerBackdrop = document.querySelector("#hamburgerBackdrop");
+const navSearchBarBtns = document.querySelectorAll(".nav-search-bar-btn");
 const exitBtn = document.querySelector(".exitBtn");
 const themeBtn = document.querySelectorAll(".themeBtn");
 const body = document.querySelector("body");
@@ -24,6 +26,14 @@ const videoContainer = document.querySelector(".video-container");
 const searchForms = document.querySelectorAll(".searchForm");
 const searchInputs = document.querySelectorAll(".searchInput");
 const searchPopup = document.querySelector(".search-popup");
+const hamburgerSearchBtns = document.querySelectorAll(".hamburgerSearchBtn");
+const mobileSearchModal = document.querySelector("#mobileSearchModal");
+const mobileSearchForm = document.querySelector("#mobileSearchForm");
+const mobileSearchInput = document.querySelector("#mobileSearchInput");
+const mobileSearchClear = document.querySelector("#mobileSearchClear");
+const mobileSearchClose = document.querySelector("#mobileSearchClose");
+const mobileSearchResults = document.querySelector("#mobileSearchResults");
+const mobileSearchBackdrop = document.querySelector(".mobile-search-backdrop");
 const navListEls = document.querySelectorAll(".nav-list");
 const videoPopup = document.querySelector(".video-popup");
 const characters = document.querySelector(".characters");
@@ -75,10 +85,22 @@ function saveWishlist(wishlist) {
 
 applyTheme();
 
+function openHamburgerMenu() {
+  if (hamburgerMenu) hamburgerMenu.classList.add("active");
+  if (hamburgerBackdrop) hamburgerBackdrop.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+function closeHamburgerMenu() {
+  if (hamburgerMenu) hamburgerMenu.classList.remove("active");
+  if (hamburgerBackdrop) hamburgerBackdrop.classList.remove("active");
+  document.body.style.overflow = "";
+}
+
 navListEls.forEach((navItem) => {
   navItem.addEventListener("click", (e) => {
-    if (e.target.tagName === "A") {
-      hamburgerMenu.classList.remove("active");
+    if (e.target.tagName === "A" || e.target.closest("a")) {
+      closeHamburgerMenu();
     }
   });
 });
@@ -97,7 +119,7 @@ themeBtn.forEach((el) => {
       }
 
       applyTheme();
-      hamburgerMenu.classList.remove("active");
+      closeHamburgerMenu();
       body.classList.remove("fade");
     }, 300);
   });
@@ -107,13 +129,18 @@ themeBtn.forEach((el) => {
 
 if (hamburgerBtn) {
   hamburgerBtn.addEventListener("click", (e) => {
-    hamburgerMenu.classList.add("active");
+    e.preventDefault();
+    openHamburgerMenu();
   });
 }
 if (exitBtn) {
   exitBtn.addEventListener("click", (e) => {
-    hamburgerMenu.classList.remove("active");
+    e.preventDefault();
+    closeHamburgerMenu();
   });
+}
+if (hamburgerBackdrop) {
+  hamburgerBackdrop.addEventListener("click", closeHamburgerMenu);
 }
 
 // options & search URLs
@@ -232,6 +259,9 @@ if (window.location.pathname.endsWith("movies.html") || window.location.pathname
     searchInputs.forEach((input) => {
       input.value = searchID;
     });
+    if (mobileSearchInput) {
+      mobileSearchInput.value = searchID;
+    }
     loadSearchMovies(searchID);
   } else {
     loadDefaultMovies();
@@ -781,6 +811,224 @@ document.addEventListener("click", (e) => {
   }
 });
 
+// ==========================================
+// Mobile / Top Search Popup Functionality
+// ==========================================
+
+function escapeHtml(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function openMobileSearch() {
+  closeHamburgerMenu();
+  if (!mobileSearchModal) return;
+
+  mobileSearchModal.classList.add("active");
+  mobileSearchModal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+
+  setTimeout(() => {
+    if (mobileSearchInput) {
+      mobileSearchInput.focus();
+      const val = mobileSearchInput.value.trim();
+      if (val) {
+        updateMobileSearchResults(val);
+      }
+    }
+  }, 120);
+}
+
+function closeMobileSearch() {
+  if (!mobileSearchModal) return;
+  mobileSearchModal.classList.remove("active");
+  mobileSearchModal.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+
+let mobileSearchDebounceTimer;
+
+function updateMobileSearchResults(query) {
+  if (!mobileSearchResults) return;
+
+  clearTimeout(mobileSearchDebounceTimer);
+
+  const trimmed = (query || "").trim();
+
+  if (mobileSearchClear) {
+    if (trimmed) {
+      mobileSearchClear.classList.add("visible");
+    } else {
+      mobileSearchClear.classList.remove("visible");
+    }
+  }
+
+  if (!trimmed) {
+    mobileSearchResults.classList.remove("has-content");
+    mobileSearchResults.innerHTML = "";
+    return;
+  }
+
+  mobileSearchResults.classList.add("has-content");
+  mobileSearchResults.innerHTML = `
+    <div class="mobile-search-message">
+      <i class="bi bi-arrow-repeat spin"></i>
+      <span>Searching for "${escapeHtml(trimmed)}"...</span>
+    </div>
+  `;
+
+  mobileSearchDebounceTimer = setTimeout(() => {
+    getAllMediaBySearch(options, trimmed)
+      .then((items) => {
+        const queryLower = trimmed.toLowerCase();
+
+        // Filter films matching user typed values
+        const filtered = items.filter((item) => {
+          const title = (item.title || item.name || "").toLowerCase();
+          return title.includes(queryLower);
+        });
+
+        // Prioritize films whose title starts with user typed value
+        filtered.sort((a, b) => {
+          const aTitle = (a.title || a.name || "").toLowerCase();
+          const bTitle = (b.title || b.name || "").toLowerCase();
+          const aStarts = aTitle.startsWith(queryLower);
+          const bStarts = bTitle.startsWith(queryLower);
+          if (aStarts && !bStarts) return -1;
+          if (!aStarts && bStarts) return 1;
+          return 0;
+        });
+
+        if (filtered.length === 0) {
+          mobileSearchResults.innerHTML = `
+            <div class="mobile-search-message">
+              <i class="bi bi-film"></i>
+              <span>No movies or TV shows found matching "${escapeHtml(trimmed)}"</span>
+            </div>
+          `;
+          return;
+        }
+
+        mobileSearchResults.innerHTML = "";
+
+        filtered.forEach((item) => {
+          const isTV = item.media_type === "tv" || (item.name && !item.title);
+          const title = item.title || item.name || "Untitled";
+          const itemID = item.id;
+          const linkUrl = isTV ? `./tv.html?id=${itemID}` : `./movie.html?id=${itemID}`;
+          const posterUrl = item.poster_path
+            ? `https://image.tmdb.org/t/p/w185${item.poster_path}`
+            : "./Images/logo.png";
+          const releaseDate = item.release_date || item.first_air_date || "";
+          const year = releaseDate ? releaseDate.split("-")[0] : "";
+          const rating = item.vote_average ? item.vote_average.toFixed(1) : "";
+
+          const link = document.createElement("a");
+          link.href = linkUrl;
+          link.className = "mobile-search-item";
+          link.innerHTML = `
+            <img src="${posterUrl}" alt="${escapeHtml(title)}" class="mobile-search-item-poster" onerror="this.src='./Images/logo.png';" />
+            <div class="mobile-search-item-info">
+              <div class="mobile-search-item-title">${escapeHtml(title)}</div>
+              <div class="mobile-search-item-meta">
+                <span class="mobile-search-badge ${isTV ? "tv" : "movie"}">${isTV ? "TV Show" : "Movie"}</span>
+                ${year ? `<span class="mobile-search-year">${year}</span>` : ""}
+                ${rating ? `<span class="mobile-search-rating"><i class="bi bi-star-fill"></i> ${rating}</span>` : ""}
+              </div>
+            </div>
+            <i class="bi bi-chevron-right mobile-search-item-arrow"></i>
+          `;
+
+          link.addEventListener("click", () => {
+            closeMobileSearch();
+          });
+
+          mobileSearchResults.appendChild(link);
+        });
+      })
+      .catch((err) => {
+        console.error("Search fetch error:", err);
+        mobileSearchResults.innerHTML = `
+          <div class="mobile-search-message" style="color: #ff5252;">
+            <i class="bi bi-exclamation-triangle"></i>
+            <span>Unable to load search results. Please try again.</span>
+          </div>
+        `;
+      });
+  }, 200);
+}
+
+// Mobile search event bindings
+hamburgerSearchBtns.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    openMobileSearch();
+  });
+});
+
+navSearchBarBtns.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    openMobileSearch();
+  });
+});
+
+if (mobileSearchClose) {
+  mobileSearchClose.addEventListener("click", (e) => {
+    e.preventDefault();
+    closeMobileSearch();
+  });
+}
+
+if (mobileSearchBackdrop) {
+  mobileSearchBackdrop.addEventListener("click", closeMobileSearch);
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    if (mobileSearchModal && mobileSearchModal.classList.contains("active")) {
+      closeMobileSearch();
+    }
+    if (hamburgerMenu && hamburgerMenu.classList.contains("active")) {
+      closeHamburgerMenu();
+    }
+  }
+});
+
+if (mobileSearchInput) {
+  mobileSearchInput.addEventListener("input", (e) => {
+    updateMobileSearchResults(e.target.value);
+  });
+}
+
+if (mobileSearchClear) {
+  mobileSearchClear.addEventListener("click", () => {
+    if (mobileSearchInput) {
+      mobileSearchInput.value = "";
+      mobileSearchInput.focus();
+      updateMobileSearchResults("");
+    }
+  });
+}
+
+if (mobileSearchForm) {
+  mobileSearchForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (mobileSearchInput) {
+      const q = mobileSearchInput.value.trim();
+      if (q) {
+        closeMobileSearch();
+        window.location.href = `./movies.html?search=${encodeURIComponent(q)}`;
+      }
+    }
+  });
+}
+
 // rendering wishlist
 
 function renderWishlist() {
@@ -966,6 +1214,9 @@ if (window.location.pathname.endsWith("tvshows.html") || window.location.pathnam
     searchInputs.forEach((input) => {
       input.value = searchID;
     });
+    if (mobileSearchInput) {
+      mobileSearchInput.value = searchID;
+    }
     loadSearchTVShows(searchID);
   } else {
     loadDefaultTVShows();

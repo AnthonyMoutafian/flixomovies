@@ -37,34 +37,144 @@
             <a href="./wishlist.html" class="bi bi-star-fill wishlistBtn"></a>
             <i class="bi bi-brightness-high-fill themeBtn"></i>
           </div>
-          <div class="hamburger">
-            <i class="bi bi-list hamburgerBtn"></i>
+          <div class="nav-mobile-group">
+            <button type="button" class="nav-search-bar-btn" id="navMobileSearchBtn" aria-label="Open search">
+              <i class="bi bi-search"></i>
+              <span class="nav-search-bar-text">Search...</span>
+            </button>
+            <div class="hamburger">
+              <i class="bi bi-list hamburgerBtn"></i>
+            </div>
           </div>
         </div>
       </div>
     </nav>
 
+    <!-- Backdrop for hamburger drawer -->
+    <div class="hamburger-backdrop" id="hamburgerBackdrop"></div>
+
     <div class="hamburger-menu">
-      <i class="bi bi-x exitBtn"></i>
-      <ul class="nav-list">
-        <li><a href="./index.html">Home</a></li>
-        <li><a href="./movies.html">Movies</a></li>
-        <li><a href="./tvshows.html">TV Shows</a></li>
-        <li><a href="#footer">Studios</a></li>
-        <li>
-          <form class="searchForm">
-            <input
-              type="text"
-              class="searchInput"
-              placeholder="Search movies & TV shows..."
-            />
-            <button type="submit" class="bi bi-search searchBtn"></button>
-            <div class="search-popup"></div>
-          </form>
-          <a href="./wishlist.html" class="bi bi-star-fill wishlistBtn"></a>
-          <i class="bi bi-brightness-high-fill themeBtn"></i>
-        </li>
-      </ul>
+      <div class="hamburger-header">
+        <a href="./index.html" class="hamburger-brand">
+          <img src="./Images/logo.png" alt="Flixo" class="hamburger-brand-logo" />
+          <span class="hamburger-brand-title">Flixo</span>
+        </a>
+        <button type="button" class="exitBtn" aria-label="Close menu">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="hamburger-body">
+        <div class="hamburger-section-head">
+          <span>MENU</span>
+        </div>
+
+        <ul class="nav-list hamburger-nav-list">
+          <li class="hamburger-nav-item">
+            <a href="./index.html" class="hamburger-nav-link">
+              <div class="nav-link-content">
+                <div class="nav-icon-box">
+                  <i class="bi bi-house-door-fill"></i>
+                </div>
+                <span class="nav-link-name">Home</span>
+              </div>
+              <i class="bi bi-chevron-right nav-link-arrow"></i>
+            </a>
+          </li>
+          <li class="hamburger-nav-item">
+            <a href="./movies.html" class="hamburger-nav-link">
+              <div class="nav-link-content">
+                <div class="nav-icon-box">
+                  <i class="bi bi-film"></i>
+                </div>
+                <span class="nav-link-name">Movies</span>
+              </div>
+              <span class="nav-link-badge">HOT</span>
+              <i class="bi bi-chevron-right nav-link-arrow"></i>
+            </a>
+          </li>
+          <li class="hamburger-nav-item">
+            <a href="./tvshows.html" class="hamburger-nav-link">
+              <div class="nav-link-content">
+                <div class="nav-icon-box">
+                  <i class="bi bi-tv-fill"></i>
+                </div>
+                <span class="nav-link-name">TV Shows</span>
+              </div>
+              <span class="nav-link-badge series">SERIES</span>
+              <i class="bi bi-chevron-right nav-link-arrow"></i>
+            </a>
+          </li>
+          <li class="hamburger-nav-item">
+            <a href="./index.html#footer" class="hamburger-nav-link">
+              <div class="nav-link-content">
+                <div class="nav-icon-box">
+                  <i class="bi bi-camera-reels-fill"></i>
+                </div>
+                <span class="nav-link-name">Studios</span>
+              </div>
+              <i class="bi bi-chevron-right nav-link-arrow"></i>
+            </a>
+          </li>
+        </ul>
+
+        <div class="hamburger-divider"></div>
+
+        <div class="hamburger-section-head">
+          <span>QUICK ACTIONS</span>
+        </div>
+
+        <div class="hamburger-actions-grid">
+          <button type="button" class="hamburger-action-card hamburgerSearchBtn" aria-label="Search">
+            <div class="action-card-icon search-glow">
+              <i class="bi bi-search"></i>
+            </div>
+            <span class="action-card-title">Search</span>
+            <span class="action-card-subtitle">Find films</span>
+          </button>
+          <a href="./wishlist.html" class="hamburger-action-card wishlistBtn" aria-label="Wishlist">
+            <div class="action-card-icon star-glow">
+              <i class="bi bi-star-fill"></i>
+            </div>
+            <span class="action-card-title">Wishlist</span>
+            <span class="action-card-subtitle">Saved titles</span>
+          </a>
+          <button type="button" class="hamburger-action-card themeBtn" aria-label="Toggle theme">
+            <div class="action-card-icon theme-glow">
+              <i class="bi bi-brightness-high-fill"></i>
+            </div>
+            <span class="action-card-title">Theme</span>
+            <span class="action-card-subtitle">Dark / Light</span>
+          </button>
+        </div>
+
+        <div class="hamburger-footer">
+          <div class="hamburger-footer-pill">
+            <i class="bi bi-shield-check"></i>
+            <span>Flixo Streaming &bull; Premium HD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Search Popup for Mobile / Smaller Devices -->
+    <div id="mobileSearchModal" class="mobile-search-modal" aria-hidden="true">
+      <div class="mobile-search-backdrop"></div>
+      <div class="mobile-search-dialog">
+        <form class="mobile-search-bar" id="mobileSearchForm">
+          <i class="bi bi-search mobile-search-icon"></i>
+          <input
+            type="text"
+            id="mobileSearchInput"
+            class="mobile-search-input"
+            placeholder="Search movies & TV shows..."
+            autocomplete="off"
+          />
+          <button type="button" id="mobileSearchClear" class="bi bi-x-circle-fill mobile-search-clear" aria-label="Clear search"></button>
+          <button type="button" id="mobileSearchClose" class="bi bi-x-lg mobile-search-close" aria-label="Close search"></button>
+        </form>
+        <div id="mobileSearchResults" class="mobile-search-results"></div>
+      </div>
     </div>
 
     <div class="container">
