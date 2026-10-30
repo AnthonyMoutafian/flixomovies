@@ -470,7 +470,7 @@ if (window.location.pathname.endsWith("movie.html")) {
   if (filmID !== null && watchMovie) {
     watchMovie.addEventListener("click", (e) => {
       e.preventDefault();
-      if (popupVideo) popupVideo.src = `https://player.vidlove.cc/embed/movie/${filmID}`;
+      if (popupVideo) popupVideo.src = `https://cinesrc.st/embed/movie/${filmID}`;
       if (videoPopup) videoPopup.style.display = "flex";
     });
   }
@@ -672,7 +672,7 @@ function loadSeasonEpisodes(tvShowID, seasonNumber, showPoster) {
 
 function playTvVideo(tmdbID, season, episode) {
   if (!popupVideo || !videoPopup) return;
-  const embedURL = `https://player.vidlove.cc/embed/tv/${tmdbID}/${season}/${episode}?primarycolor=0084ff&secondarycolor=002570`;
+  const embedURL = `https://cinesrc.st/embed/tv/${tmdbID}?s=${season}&e=${episode}`;
   popupVideo.src = embedURL;
   videoPopup.style.display = "flex";
 }
