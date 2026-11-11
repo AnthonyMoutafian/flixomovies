@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flixo - TV Shows</title>
+    <link rel="icon" href="./Images/logo.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
+    <link id="theme-style" rel="stylesheet" href="./css/styleLight.css" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6452748402255868"
+     crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <nav class="navigator">
+      <div class="container">
+        <div class="nav-container">
+          <div class="nav-left">
+            <a href="index.html">Flixo</a>
+          </div>
+          <div class="nav-center">
+            <ul class="nav-list">
+              <li><a href="./index.html">Home</a></li>
+              <li><a href="./movies.html">Movies</a></li>
+              <li><a href="./tvshows.html">TV Shows</a></li>
+              <li><a href="#footer">Studios</a></li>
+            </ul>
+          </div>
+          <div class="nav-right">
+            <form class="searchForm" action="">
+              <input type="text" class="searchInput" placeholder="Search movies & TV shows..." />
+              <button class="bi bi-search searchBtn"></button>
+              <div class="search-popup"></div>
+            </form>
+            <a href="./wishlist.html" class="bi bi-star-fill wishlistBtn"></a>
+            <i class="bi bi-brightness-high-fill themeBtn"></i>
+          </div>
+          <div class="nav-mobile-group">
+            <button type="button" class="nav-search-bar-btn" id="navMobileSearchBtn" aria-label="Open search">
+              <i class="bi bi-search"></i>
+              <span class="nav-search-bar-text">Search...</span>
+            </button>
+            <div class="hamburger">
+              <i class="bi bi-list hamburgerBtn"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div id="videoPopup" class="video-popup">
+      <div class="video-container">
+        <iframe
+          id="popupVideo"
+          width="560"
+          height="315"
+          src=""
+          title="Video player"
+          frameborder="0"
+          allow="
+            accelerometer;
+            autoplay;
+            clipboard-write;
+            encrypted-media;
+            gyroscope;
+            picture-in-picture;
+            web-share;
+          "
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin"
+        >
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Backdrop for hamburger drawer -->
+    <div class="hamburger-backdrop" id="hamburgerBackdrop"></div>
+
+    <div class="hamburger-menu">
+      <div class="hamburger-header">
+        <a href="./index.html" class="hamburger-brand">
+          <img src="./Images/logo.png" alt="Flixo" class="hamburger-brand-logo" />
+          <span class="hamburger-brand-title">Flixo</span>
+        </a>
+        <button type="button" class="exitBtn" aria-label="Close menu">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="hamburger-body">
+        <div class="hamburger-section-head">
+          <span>MENU</span>
+        </div>
+
+        <ul class="nav-list hamburger-nav-list">
+          <li class="hamburger-nav-item">
+            <a href="./index.html" class="hamburger-nav-link">
+              <div class="nav-link-content">
+                <div class="nav-icon-box">
+                  <i class="bi bi-house-door-fill"></i>
+                </div>
+                <span class="nav-link-name">Home</span>
+              </div>
+              <i class="bi bi-chevron-right nav-link-arrow"></i>
+            </a>
+          </li>
+          <li class="hamburger-nav-item">
+            <a href="./movies.html" class="hamburger-nav-link">
+              <div class="nav-link-content">
+                <div class="nav-icon-box">
+                  <i class="bi bi-film"></i>
+                </div>
+                <span class="nav-link-name">Movies</span>
+              </div>
+              <span class="nav-link-badge">HOT</span>
+              <i class="bi bi-chevron-right nav-link-arrow"></i>
+            </a>
+          </li>
+          <li class="hamburger-nav-item">
+            <a href="./tvshows.html" class="hamburger-nav-link">
+              <div class="nav-link-content">
+                <div class="nav-icon-box">
+                  <i class="bi bi-tv-fill"></i>
+                </div>
+                <span class="nav-link-name">TV Shows</span>
+              </div>
+              <span class="nav-link-badge series">SERIES</span>
+              <i class="bi bi-chevron-right nav-link-arrow"></i>
+            </a>
+          </li>
+          <li class="hamburger-nav-item">
+            <a href="./index.html#footer" class="hamburger-nav-link">
+              <div class="nav-link-content">
+                <div class="nav-icon-box">
+                  <i class="bi bi-camera-reels-fill"></i>
+                </div>
+                <span class="nav-link-name">Studios</span>
+              </div>
+              <i class="bi bi-chevron-right nav-link-arrow"></i>
+            </a>
+          </li>
+        </ul>
+
+        <div class="hamburger-divider"></div>
+
+        <div class="hamburger-section-head">
+          <span>QUICK ACTIONS</span>
+        </div>
+
+        <div class="hamburger-actions-grid">
+          <button type="button" class="hamburger-action-card hamburgerSearchBtn" aria-label="Search">
+            <div class="action-card-icon search-glow">
+              <i class="bi bi-search"></i>
+            </div>
+            <span class="action-card-title">Search</span>
+            <span class="action-card-subtitle">Find films</span>
+          </button>
+          <a href="./wishlist.html" class="hamburger-action-card wishlistBtn" aria-label="Wishlist">
+            <div class="action-card-icon star-glow">
+              <i class="bi bi-star-fill"></i>
+            </div>
+            <span class="action-card-title">Wishlist</span>
+            <span class="action-card-subtitle">Saved titles</span>
+          </a>
+          <button type="button" class="hamburger-action-card themeBtn" aria-label="Toggle theme">
+            <div class="action-card-icon theme-glow">
+              <i class="bi bi-brightness-high-fill"></i>
+            </div>
+            <span class="action-card-title">Theme</span>
+            <span class="action-card-subtitle">Dark / Light</span>
+          </button>
+        </div>
+
+        <div class="hamburger-footer">
+          <div class="hamburger-footer-pill">
+            <i class="bi bi-shield-check"></i>
+            <span>Flixo Streaming &bull; Premium HD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Search Popup for Mobile / Smaller Devices -->
+    <div id="mobileSearchModal" class="mobile-search-modal" aria-hidden="true">
+      <div class="mobile-search-backdrop"></div>
+      <div class="mobile-search-dialog">
+        <form class="mobile-search-bar" id="mobileSearchForm">
+          <i class="bi bi-search mobile-search-icon"></i>
+          <input
+            type="text"
+            id="mobileSearchInput"
+            class="mobile-search-input"
+            placeholder="Search movies & TV shows..."
+            autocomplete="off"
+          />
+          <button type="button" id="mobileSearchClear" class="bi bi-x-circle-fill mobile-search-clear" aria-label="Clear search"></button>
+          <button type="button" id="mobileSearchClose" class="bi bi-x-lg mobile-search-close" aria-label="Close search"></button>
+        </form>
+        <div id="mobileSearchResults" class="mobile-search-results"></div>
+      </div>
+    </div>
+
+    <div class="container moviesContainer">
+      <label>Filter TV Genres:</label>
+
+      <div id="tv-genre-select" class="genre-chips"></div>
+      <div class="movie-detail tv-shows-detail"></div>
+    </div>
+
+    <footer class="footer" id="footer">
+      <h2>Studios</h2>
+      <img src="./Images/Group 27.png" alt="studios" />
+      <p>Flixo - All Rights Reserved.</p>
+    </footer>
+
+    <script type="module" src="./js/script.js"></script>
+  </body>
+</html>
